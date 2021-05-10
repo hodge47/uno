@@ -41,9 +41,8 @@ void Deck::CreateDeck()
 void Deck::ShuffleDeck() {
     std::cout << "Shuffling deck..." << std::endl;
     int N = sizeof Cards / sizeof Cards[0];
-    for(int i=N-1; i>0; --i) {
+    for(int i = N - 1; i > 0; --i) {
         int r = rand() % (i+1);
-        // generate rand numbers from 0 to i
         std::swap(Cards[i], Cards[r]);
     }
 }

@@ -5,16 +5,17 @@
 #ifndef UNO_DECK_H
 #define UNO_DECK_H
 #include "Card.h"
+#include <vector>
 
 class Deck {
 
 private:
-    Card* Cards [80] {};
-
     void CreateDeck();
     void DestroyDeck();
 
 public:
+    std::vector<Card*> Cards;
+
     Deck();
     ~Deck();
 

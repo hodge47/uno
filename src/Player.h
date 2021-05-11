@@ -13,11 +13,12 @@ class Player {
 
 private:
     bool IsHuman;
-    std::vector<Card> Hand;
+    std::vector<Card*> Hand;
 
 public:
     Player(bool ishuman);
-    void DealHand(Card* hand);
+    void DealHand(std::vector<Card*> newHand);
+    std::vector<Card*> GetHand();
 };
 
 

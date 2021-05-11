@@ -8,13 +8,15 @@ Player::Player(bool ishuman) {
     IsHuman = ishuman;
 }
 
-void Player::DealHand(Card *hand) {
+void Player::DealHand(std::vector<Card*> newHand) {
     // Get the length needed for the hand vector
-    int N = sizeof hand / sizeof hand[0];
-    std::cout << "(Hand)===========================================" << std::endl;
+    int N = newHand.size();
     for(int i = 0; i < N; i++)
     {
-        Hand.push_back(hand[i]);
-        std::cout << "Card color: " << hand[i].CardColor << ", Card value: " << hand[0].CardValue << std::endl;
+        Hand.push_back(newHand[i]);
     }
+}
+
+std::vector<Card*> Player::GetHand() {
+    return Hand;
 }

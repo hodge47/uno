@@ -8,6 +8,8 @@
 Deck::Deck() {
     // Create the deck
     CreateDeck();
+    // Shuffle the deck
+    ShuffleDeck();
 }
 
 Deck::~Deck() {
@@ -27,7 +29,7 @@ void Deck::CreateDeck()
             int cardValue = j;
             if(j > 9)
                 cardValue = j - 10;
-            Cards[cardIndex] = new Card((Card::Color)i, (Card::Value)cardValue);
+            Cards.push_back(new Card((Card::Color)i, (Card::Value)cardValue));
             cardIndex++;
         }
     }
@@ -40,7 +42,7 @@ void Deck::CreateDeck()
  */
 void Deck::ShuffleDeck() {
     std::cout << "Shuffling deck..." << std::endl;
-    int N = sizeof Cards / sizeof Cards[0];
+    int N = Cards.size();
     for(int i = N - 1; i > 0; --i) {
         int r = rand() % (i+1);
         std::swap(Cards[i], Cards[r]);
@@ -55,9 +57,9 @@ void Deck::DestroyDeck() {
 
 void Deck::PrintDeckCards() {
     int count = 0;
-    for(auto card : Cards)
+    for(int i = 0; i < Cards.size(); i++)
     {
-        std::cout << "Card color: " << card->CardColor << ", Card value: " << card->CardValue << std::endl;
+        std::cout << "Card color: " << Cards[i]->CardColor << ", Card value: " << Cards[i]->CardValue << std::endl;
         count++;
     }
     std::cout << "Card count: " << count << std::endl;

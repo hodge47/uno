@@ -10,6 +10,8 @@ GameManager::GameManager() {
     CreatePlayers();
     // Create a deck
     GameDeck = new Deck();
+    // Deal hands to the players
+    DealHandsToPlayers();
 }
 
 GameManager::~GameManager() {
@@ -35,5 +37,20 @@ void GameManager::DestroyPlayers() {
 }
 
 void GameManager::DealHandsToPlayers() {
-
+    int cardIndex = 0;
+    for(int i = 0; i < sizeof Players / sizeof Players[0]; i++)
+    {
+        // Create hand
+        std::vector<Card*> NewHand;
+        for(int j = 0; j < 7; j++)
+        {
+            // Assign card to the player hand
+            NewHand.push_back(GameDeck->Cards[cardIndex]);
+            // Remove the card from the deck
+            GameDeck->Cards.erase(GameDeck->Cards.begin() + cardIndex);
+            cardIndex++;
+        }
+        // deal hand to player
+        Players[i]->DealHand(NewHand);
+    }
 }

@@ -20,6 +20,7 @@ public:
     ~Deck();
 
     void ShuffleDeck();
+    Card* DrawCard();
     void PrintDeckCards();
 };
 

@@ -55,6 +55,14 @@ void Deck::DestroyDeck() {
     }
 }
 
+Card* Deck::DrawCard(){
+    int RandomCard = rand() % (Cards.size() + 1);
+    Card* PulledCard = Cards[RandomCard];
+    // Remove the card from the deck
+    Cards.erase(Cards.begin() + RandomCard);
+    return PulledCard;
+}
+
 void Deck::PrintDeckCards() {
     int count = 0;
     for(int i = 0; i < Cards.size(); i++)

@@ -12,6 +12,9 @@ GameManager::GameManager() {
     GameDeck = new Deck();
     // Deal hands to the players
     DealHandsToPlayers();
+    // Draw the first card
+    DrawFirstCard();
+    std::cout << "The first card is " << CardStack[0]->CardColor << ", " << CardStack[0]->CardValue << std::endl;
 }
 
 GameManager::~GameManager() {
@@ -34,6 +37,13 @@ void GameManager::CreatePlayers() {
 void GameManager::DestroyPlayers() {
     for(auto player : Players)
         delete player;
+}
+
+void GameManager::DrawFirstCard() {
+    // Draw the first card at the start of the game
+    Card* PulledCard = GameDeck->DrawCard();
+    // Place card in the card stack
+    CardStack.push_back(PulledCard);
 }
 
 void GameManager::DealHandsToPlayers() {

@@ -44,6 +44,7 @@ void Deck::ShuffleDeck() {
     std::cout << "Shuffling deck..." << std::endl;
     int N = Cards.size();
     for(int i = N - 1; i > 0; --i) {
+        srand (time(NULL));
         int r = rand() % (i+1);
         std::swap(Cards[i], Cards[r]);
     }
@@ -56,6 +57,7 @@ void Deck::DestroyDeck() {
 }
 
 Card* Deck::DrawCard(){
+    srand (time(NULL));
     int RandomCard = rand() % (Cards.size() + 1);
     Card* PulledCard = Cards[RandomCard];
     // Remove the card from the deck

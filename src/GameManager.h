@@ -12,7 +12,8 @@
 
 class GameManager {
 private:
-    Player* Players [4] {};
+    class Player* Players [4] {};
+    int PlayerTurn;
     Deck* GameDeck;
     std::vector<Card*> CardStack;
 
@@ -23,6 +24,10 @@ public:
     void CreatePlayers();
     void DestroyPlayers();
     void DrawFirstCard();
+    Card* DrawCard();
+    void RecycleCards();
+    bool PlaceCard(class Player* player, Card* placedCard);
+    void PlayerFinishedTurn();
 };
 
 

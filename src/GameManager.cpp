@@ -14,7 +14,8 @@ GameManager::GameManager() {
     DealHandsToPlayers();
     // Draw the first card
     DrawFirstCard();
-    std::cout << "The first card is " << CardStack[0]->CardColor << ", " << CardStack[0]->CardValue << std::endl;
+
+    Players[0]->StartTurn(this);
 }
 
 GameManager::~GameManager() {
@@ -44,6 +45,29 @@ void GameManager::DrawFirstCard() {
     Card* PulledCard = GameDeck->DrawCard();
     // Place card in the card stack
     CardStack.push_back(PulledCard);
+    std::cout << "The first card is " << PulledCard->CardColor << ", " << PulledCard->CardValue << std::endl;
+}
+
+Card* GameManager::DrawCard() {
+    // Recycle the cards if there are no cards in the card stack
+    if (GameDeck->Cards.size() <= 0)
+    {
+        RecycleCards();
+    }
+    // Draw a card
+    Card* card = GameDeck->DrawCard();
+    return card;
+}
+
+void GameManager::RecycleCards() {
+    // Move all cards from card stack into game deck
+    for(int i = 0; i < CardStack.size(); i++)
+    {
+        GameDeck->Cards.push_back(CardStack[i]);
+        CardStack.erase(CardStack.begin() + i);
+    }
+    // Shuffle the cards
+    GameDeck->ShuffleDeck();
 }
 
 void GameManager::DealHandsToPlayers() {
@@ -64,3 +88,20 @@ void GameManager::DealHandsToPlayers() {
         Players[i]->DealHand(NewHand);
     }
 }
+
+bool GameManager::PlaceCard(Player *player, Card *placedCard) {
+
+    if (placedCard->CardColor ==  CardStack[CardStack.size() - 1]->CardColor || placedCard->CardValue  == CardStack[CardStack.size() - 1]->CardValue)
+    {
+        CardStack.push_back(placedCard);
+        std::cout << "A card was Placed! " << CardStack[CardStack.size() - 1]->CardColor << ", " << CardStack[CardStack.size() - 1]->CardValue << std::endl;
+        return true;
+    }
+    else
+        return false;
+
+}
+
+void GameManager::PlayerFinishedTurn() {
+
+};

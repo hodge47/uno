@@ -12,4 +12,4 @@ addons:
 script:
   - CXX=/usr/bin/g++-7 CC=/usr/bin/gcc-7 cmake -DCOVERAGE=1 .
   - cmake --build .
-  - ./uno
+  - ./uno --no-user

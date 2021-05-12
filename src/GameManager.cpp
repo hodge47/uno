@@ -98,6 +98,7 @@ bool GameManager::PlaceCard(Player *player, Card *placedCard) {
     {
         CardStack.push_back(placedCard);
         std::cout << "Player[" << PlayerTurn << "] placed a " << CardStack[CardStack.size() - 1]->CardColor << ", " << CardStack[CardStack.size() - 1]->CardValue << "!" << std::endl;
+
         return true;
     }
     else
@@ -105,13 +106,50 @@ bool GameManager::PlaceCard(Player *player, Card *placedCard) {
 
 }
 
-void GameManager::PlayerFinishedTurn(Player* player) {
-    if(PlayerTurn < (sizeof Players / sizeof Players[0]) - 1)
+bool GameManager::CheckForSpecialCard(Card* placedCard) {
+    //10 - skip, 11 - reverse, 12 - draw2
+
+    // Skip the next player
+    if(placedCard->CardValue == (Card::Value)10)
     {
-        PlayerTurn++;
+        int playerCount = sizeof Players / sizeof Players[0];
+
+        int currentPlayer = PlayerTurn;
+        int skippedPlayer;
+        int nextPlayer;
+
+        if(currentPlayer == playerCount - 1)
+        {
+            skippedPlayer = 0;
+            nextPlayer = 1;
+        }
+        else
+        {
+            skippedPlayer = PlayerTurn++;
+            nextPlayer = skippedPlayer++;
+        }
+
+        std::cout << "Player[" << skippedPlayer << "] was skipped!" << std::endl;
+        std::cout << "It is now Player[" << nextPlayer << "]'s turn..." << std::endl;
+
+        PlayerTurn = nextPlayer;
+        return true;
     }
-    else
-        PlayerTurn = 0;
+
+    return false;
+}
+
+void GameManager::PlayerFinishedTurn(Player* player) {
+    // Check to see if the card is a special card
+    if(CheckForSpecialCard(CardStack[CardStack.size() - 1]) == false)
+    {
+        if(PlayerTurn < (sizeof Players / sizeof Players[0]) - 1)
+        {
+            PlayerTurn++;
+        }
+        else
+            PlayerTurn = 0;
+    }
 
     Players[PlayerTurn]->StartTurn(this);
 };

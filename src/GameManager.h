@@ -28,6 +28,7 @@ public:
     Card* DrawCard();
     void RecycleCards();
     bool PlaceCard(class Player* player, Card* placedCard);
+    bool CheckForSpecialCard(Card* placedCards);
     void PlayerFinishedTurn(Player* player);
     void PlayerWon(class Player* player);
     void ShowTopOfCardStack();

@@ -19,6 +19,7 @@ private:
 
 public:
     Player(bool ishuman);
+    bool GetIsHuman();
     void DealHand(std::vector<Card*> newHand);
     std::vector<Card*> GetHand();
     void StartTurn(class GameManager* gameManager);

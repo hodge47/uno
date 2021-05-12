@@ -15,7 +15,9 @@ GameManager::GameManager() {
     // Draw the first card
     DrawFirstCard();
 
-    Players[0]->StartTurn(this);
+    // Start player turns
+    PlayerTurn = 0;
+    Players[PlayerTurn]->StartTurn(this);
 }
 
 GameManager::~GameManager() {
@@ -45,7 +47,7 @@ void GameManager::DrawFirstCard() {
     Card* PulledCard = GameDeck->DrawCard();
     // Place card in the card stack
     CardStack.push_back(PulledCard);
-    std::cout << "The first card is " << PulledCard->CardColor << ", " << PulledCard->CardValue << std::endl;
+    //std::cout << "The first card is " << PulledCard->CardColor << ", " << PulledCard->CardValue << std::endl;
 }
 
 Card* GameManager::DrawCard() {
@@ -54,6 +56,7 @@ Card* GameManager::DrawCard() {
     {
         RecycleCards();
     }
+    std::cout << "Player[" << PlayerTurn << "] drew a card!" << std::endl;
     // Draw a card
     Card* card = GameDeck->DrawCard();
     return card;
@@ -94,7 +97,7 @@ bool GameManager::PlaceCard(Player *player, Card *placedCard) {
     if (placedCard->CardColor ==  CardStack[CardStack.size() - 1]->CardColor || placedCard->CardValue  == CardStack[CardStack.size() - 1]->CardValue)
     {
         CardStack.push_back(placedCard);
-        std::cout << "A card was Placed! " << CardStack[CardStack.size() - 1]->CardColor << ", " << CardStack[CardStack.size() - 1]->CardValue << std::endl;
+        std::cout << "Player[" << PlayerTurn << "] placed a " << CardStack[CardStack.size() - 1]->CardColor << ", " << CardStack[CardStack.size() - 1]->CardValue << "!" << std::endl;
         return true;
     }
     else
@@ -102,6 +105,33 @@ bool GameManager::PlaceCard(Player *player, Card *placedCard) {
 
 }
 
-void GameManager::PlayerFinishedTurn() {
+void GameManager::PlayerFinishedTurn(Player* player) {
+    if(PlayerTurn < (sizeof Players / sizeof Players[0]) - 1)
+    {
+        PlayerTurn++;
+    }
+    else
+        PlayerTurn = 0;
 
+    Players[PlayerTurn]->StartTurn(this);
 };
+
+void GameManager::PlayerWon(Player* player) {
+    Winner = true;
+    int PlayerIndex = -1;
+    for(int i = 0; i < (sizeof Players / sizeof Players[0]); i++)
+    {
+        if(player == Players[i])
+        {
+            PlayerIndex = i;
+            break;
+        }
+    }
+    std::cout << "Player [" << PlayerIndex << "] Wins!" << std::endl;
+}
+
+void GameManager::ShowTopOfCardStack() {
+    std::cout << "==============================================" << std::endl;
+    std::cout << "Top of card stack: " << CardStack[CardStack.size() - 1]->CardColor << ", " << CardStack[CardStack.size() - 1]->CardValue << std::endl;
+    std::cout << "==============================================" << std::endl;
+}

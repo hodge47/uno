@@ -14,6 +14,7 @@ class GameManager {
 private:
     class Player* Players [4] {};
     int PlayerTurn;
+    bool Winner = false;
     Deck* GameDeck;
     std::vector<Card*> CardStack;
 
@@ -27,7 +28,9 @@ public:
     Card* DrawCard();
     void RecycleCards();
     bool PlaceCard(class Player* player, Card* placedCard);
-    void PlayerFinishedTurn();
+    void PlayerFinishedTurn(Player* player);
+    void PlayerWon(class Player* player);
+    void ShowTopOfCardStack();
 };
 
 

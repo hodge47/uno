@@ -10,6 +10,10 @@ Player::Player(bool ishuman) {
     IsHuman = ishuman;
 }
 
+bool Player::GetIsHuman() {
+    return IsHuman;
+}
+
 void Player::DealHand(std::vector<Card*> newHand) {
     // Get the length needed for the hand vector
     int N = newHand.size();
@@ -27,6 +31,7 @@ void Player::StartTurn(GameManager* gameManager) {
 
     if(IsHuman)
     {
+        gameManager->ShowTopOfCardStack();
         // Tell the player what their options are
         std::cout << "[Your Cards]" << std::endl;
         for(int i = 0; i < Hand.size(); i++)
@@ -53,6 +58,7 @@ void Player::StartTurn(GameManager* gameManager) {
 
         // Draw card
         DrawCard(gameManager->DrawCard());
+        FinishTurn(gameManager);
     }
 
 }
@@ -75,6 +81,7 @@ void Player::TryPlaceCard(GameManager *gameManager) {
             if(option == -1)
             {
                 DrawCard(gameManager->DrawCard());
+                CanContinue = true;
             }
             else
             {
@@ -83,9 +90,12 @@ void Player::TryPlaceCard(GameManager *gameManager) {
                     Hand.erase(Hand.begin() + option);
                     CanContinue = true;
                 }
+                else
+                {
+                    //TryPlaceCard(gameManager);
+                    return;
+                }
             }
-
-
         }
     }
 
@@ -94,9 +104,12 @@ void Player::TryPlaceCard(GameManager *gameManager) {
 
 void Player::DrawCard(Card *card) {
     Hand.push_back(card);
-    std::cout << "You drew a " << card->CardColor << ", " << card->CardValue << " card!" << std::endl;
 }
 
 void Player::FinishTurn(GameManager* gameManager) {
-
+    // Check for uno
+    if(Hand.size() == 0)
+        gameManager->PlayerWon(this);
+    else
+        gameManager->PlayerFinishedTurn(this);
 }

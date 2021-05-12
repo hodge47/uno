@@ -24,15 +24,22 @@ void Deck::CreateDeck()
     // For each color, create cards 0-9 two times
     for(int i = 0; i < Card::Color::COLOR_COUNT; i++)
     {
-        for(int j = 0; j < 20; j++)
+        Cards.push_back(new Card((Card::Color)i, (Card::Value)0));
+    }
+    // For each color, create cards 1-13 two times
+    for(int i = 0; i < Card::Color::COLOR_COUNT; i++)
+    {
+        for(int j = 1; j < 26; j++)
         {
             int cardValue = j;
-            if(j > 9)
-                cardValue = j - 10;
+            if(j > 12)
+                cardValue = j - 13;
             Cards.push_back(new Card((Card::Color)i, (Card::Value)cardValue));
             cardIndex++;
         }
     }
+
+    PrintDeckCards();
     std::cout << "Finished creating deck..." << std::endl;
 }
 

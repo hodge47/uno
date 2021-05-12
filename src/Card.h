@@ -12,7 +12,7 @@ class Card {
 
 public:
     enum Color {Red, Green, Blue, Yellow, COLOR_COUNT};
-    enum Value {Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, VALUE_COUNT};
+    enum Value {Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Skip, Reverse, Draw2, VALUE_COUNT};
 
     Color CardColor;
     Value CardValue;

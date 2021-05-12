@@ -132,6 +132,10 @@ void GameManager::PlayerWon(Player* player) {
 
 void GameManager::ShowTopOfCardStack() {
     std::cout << "==============================================" << std::endl;
+    for(int i = 0; i < (sizeof Players/ sizeof Players[0]); i++)
+    {
+        std::cout << "Player[" << i << "] has " << Players[i]->GetHand().size() << " cards" << std::endl;
+    }
     std::cout << "Top of card stack: " << CardStack[CardStack.size() - 1]->CardColor << ", " << CardStack[CardStack.size() - 1]->CardValue << std::endl;
     std::cout << "==============================================" << std::endl;
 }

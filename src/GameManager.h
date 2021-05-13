@@ -6,13 +6,14 @@
 #define UNO_GAMEMANAGER_H
 
 #include <vector>
+#include <algorithm>
 #include "Card.h"
 #include "Deck.h"
 #include "Player.h"
 
 class GameManager {
 private:
-    class Player* Players [4] {};
+    std::vector<class Player*> Players;
     int PlayerTurn;
     bool Winner = false;
     Deck* GameDeck;

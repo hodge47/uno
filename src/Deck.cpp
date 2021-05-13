@@ -25,6 +25,8 @@ void Deck::CreateDeck()
     for(int i = 0; i < Card::Color::COLOR_COUNT; i++)
     {
         Cards.push_back(new Card((Card::Color)i, (Card::Value)0));
+        Cards.push_back(new Card((Card::Color)i, (Card::Value)13));
+        Cards.push_back(new Card((Card::Color)i, (Card::Value)14));
     }
     // For each color, create cards 1-13 two times
     for(int i = 0; i < Card::Color::COLOR_COUNT; i++)

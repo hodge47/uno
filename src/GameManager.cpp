@@ -58,7 +58,6 @@ Card* GameManager::DrawCard() {
     {
         RecycleCards();
     }
-    std::cout << "Player[" << PlayerTurn << "] drew a card!" << std::endl;
     // Draw a card
     Card* card = GameDeck->DrawCard();
     return card;
@@ -143,6 +142,22 @@ bool GameManager::CheckForSpecialCard(Card* placedCard) {
     {
         std::reverse(Players.begin(), Players.end());
         std::cout << "The turn order has been reversed!" << std::endl;
+    }
+
+    // Draw 2 card
+    if(placedCard->CardValue == (Card::Value)12)
+    {
+        int nextPlayer;
+        if(PlayerTurn < Players.size() - 1)
+            nextPlayer = PlayerTurn + 1;
+        else
+            nextPlayer = 0;
+
+        Card* card1 = DrawCard();
+        Card* card2 = DrawCard();
+        Players[nextPlayer]->DrawCard(card1);
+        Players[nextPlayer]->DrawCard(card2);
+        std::cout << "Player [" << nextPlayer << "] had 2 cards added to their hand!" << std::endl;
     }
 
     return false;

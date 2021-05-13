@@ -18,8 +18,11 @@ private:
     bool Winner = false;
     Deck* GameDeck;
     std::vector<Card*> CardStack;
+    Card::Color PickedCardColor = (Card::Color)0;
+    bool MustMatchCardColorThisTurn = false;
 
     void DealHandsToPlayers();
+    Card::Color ChooseRandomColor();
 public:
     GameManager();
     ~GameManager();
@@ -29,7 +32,7 @@ public:
     Card* DrawCard();
     void RecycleCards();
     bool PlaceCard(class Player* player, Card* placedCard);
-    bool CheckForSpecialCard(Card* placedCards);
+    void CheckForSpecialCard(Card* placedCards);
     void PlayerFinishedTurn(Player* player);
     void PlayerWon(class Player* player);
     void ShowTopOfCardStack();

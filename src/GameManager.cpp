@@ -58,7 +58,6 @@ Card* GameManager::DrawCard() {
     {
         RecycleCards();
     }
-    std::cout << "Player[" << PlayerTurn << "] drew a card!" << std::endl;
     // Draw a card
     Card* card = GameDeck->DrawCard();
     return card;
@@ -96,7 +95,14 @@ void GameManager::DealHandsToPlayers() {
 
 bool GameManager::PlaceCard(Player *player, Card *placedCard) {
 
-    if (placedCard->CardColor ==  CardStack[CardStack.size() - 1]->CardColor || placedCard->CardValue  == CardStack[CardStack.size() - 1]->CardValue)
+    if(MustMatchCardColorThisTurn == true && placedCard->CardColor == PickedCardColor)
+    {
+        CardStack.push_back(placedCard);
+        std::cout << "Player[" << PlayerTurn << "] placed a " << CardStack[CardStack.size() - 1]->CardColor << ", " << CardStack[CardStack.size() - 1]->CardValue << "!" << std::endl;
+        MustMatchCardColorThisTurn = false;
+        return true;
+    }
+    else if ((placedCard->CardColor ==  CardStack[CardStack.size() - 1]->CardColor) || (placedCard->CardValue  == CardStack[CardStack.size() - 1]->CardValue) || (placedCard->CardValue == Card::Value::Wild) || (placedCard->CardValue == Card::Value::Wild_draw4))
     {
         CardStack.push_back(placedCard);
         std::cout << "Player[" << PlayerTurn << "] placed a " << CardStack[CardStack.size() - 1]->CardColor << ", " << CardStack[CardStack.size() - 1]->CardValue << "!" << std::endl;
@@ -108,7 +114,7 @@ bool GameManager::PlaceCard(Player *player, Card *placedCard) {
 
 }
 
-bool GameManager::CheckForSpecialCard(Card* placedCard) {
+void GameManager::CheckForSpecialCard(Card* placedCard) {
     //10 - skip, 11 - reverse, 12 - draw2
 
     // Skip the next player
@@ -135,7 +141,6 @@ bool GameManager::CheckForSpecialCard(Card* placedCard) {
         std::cout << "It is now Player[" << nextPlayer << "]'s turn..." << std::endl;
 
         PlayerTurn = nextPlayer;
-        return true;
     }
 
     // Reverse card
@@ -145,20 +150,67 @@ bool GameManager::CheckForSpecialCard(Card* placedCard) {
         std::cout << "The turn order has been reversed!" << std::endl;
     }
 
-    return false;
+    // Draw 2 card
+    if(placedCard->CardValue == (Card::Value)12)
+    {
+        int nextPlayer;
+        if(PlayerTurn < Players.size() - 1)
+            nextPlayer = PlayerTurn + 1;
+        else
+            nextPlayer = 0;
+
+        Card* card1 = DrawCard();
+        Card* card2 = DrawCard();
+        Players[nextPlayer]->DrawCard(card1);
+        Players[nextPlayer]->DrawCard(card2);
+        std::cout << "Player [" << nextPlayer << "] had 2 cards added to their hand!" << std::endl;
+    }
+
+    // Wild cards
+    if(placedCard->CardValue == (Card::Value)13 || placedCard->CardValue == (Card::Value)14)
+    {
+        PickedCardColor = ChooseRandomColor();
+        MustMatchCardColorThisTurn = true;
+
+        if(placedCard->CardValue == (Card::Value)14)
+        {
+            int nextPlayer;
+            if(PlayerTurn < Players.size() - 1)
+                nextPlayer = PlayerTurn + 1;
+            else
+                nextPlayer = 0;
+
+            for(int i = 0; i < 4; i++)
+            {
+                Card* newCard = DrawCard();
+                Players[nextPlayer]->DrawCard(newCard);
+            }
+            std::cout << "Player [" << nextPlayer << "] had 4 cards added to their hand!" << std::endl;
+        }
+
+        MustMatchCardColorThisTurn = true;
+        std::cout << "The set color is " << PickedCardColor << "!" << std::endl;
+    }
+}
+
+Card::Color GameManager::ChooseRandomColor()
+{
+    srand(time(NULL));
+     Card::Color color = (Card::Color)(rand() % Card::Color::COLOR_COUNT);
+    return color;
 }
 
 void GameManager::PlayerFinishedTurn(Player* player) {
+    // Check to see if the card was a special card
+    Card* placedCard = CardStack[CardStack.size() - 1];
+    CheckForSpecialCard(placedCard);
     // Check to see if the card is a special card
-    if(CheckForSpecialCard(CardStack[CardStack.size() - 1]) == false)
+    if(PlayerTurn < Players.size() - 1)
     {
-        if(PlayerTurn < Players.size() - 1)
-        {
-            PlayerTurn++;
-        }
-        else
-            PlayerTurn = 0;
+        PlayerTurn++;
     }
+    else
+        PlayerTurn = 0;
 
     Players[PlayerTurn]->StartTurn(this);
 };

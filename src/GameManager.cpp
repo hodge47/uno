@@ -31,9 +31,11 @@ void GameManager::CreatePlayers() {
     for(int i = 0; i < 4; i++)
     {
         if(i == 0)
-            Players[i] = new Player(true);
+            Players.push_back(new Player(true));
         else
-            Players[i] = new Player(false);
+            Players.push_back(new Player(false));
+
+        std::cout << Players[i] << std::endl;
     }
 }
 
@@ -75,7 +77,7 @@ void GameManager::RecycleCards() {
 
 void GameManager::DealHandsToPlayers() {
     int cardIndex = 0;
-    for(int i = 0; i < sizeof Players / sizeof Players[0]; i++)
+    for(int i = 0; i < Players.size(); i++)
     {
         // Create hand
         std::vector<Card*> NewHand;
@@ -112,7 +114,7 @@ bool GameManager::CheckForSpecialCard(Card* placedCard) {
     // Skip the next player
     if(placedCard->CardValue == (Card::Value)10)
     {
-        int playerCount = sizeof Players / sizeof Players[0];
+        int playerCount = Players.size();
 
         int currentPlayer = PlayerTurn;
         int skippedPlayer;
@@ -136,6 +138,13 @@ bool GameManager::CheckForSpecialCard(Card* placedCard) {
         return true;
     }
 
+    // Reverse card
+    if(placedCard->CardValue == (Card::Value)11)
+    {
+        std::reverse(Players.begin(), Players.end());
+        std::cout << "The turn order has been reversed!" << std::endl;
+    }
+
     return false;
 }
 
@@ -143,7 +152,7 @@ void GameManager::PlayerFinishedTurn(Player* player) {
     // Check to see if the card is a special card
     if(CheckForSpecialCard(CardStack[CardStack.size() - 1]) == false)
     {
-        if(PlayerTurn < (sizeof Players / sizeof Players[0]) - 1)
+        if(PlayerTurn < Players.size() - 1)
         {
             PlayerTurn++;
         }
@@ -157,7 +166,7 @@ void GameManager::PlayerFinishedTurn(Player* player) {
 void GameManager::PlayerWon(Player* player) {
     Winner = true;
     int PlayerIndex = -1;
-    for(int i = 0; i < (sizeof Players / sizeof Players[0]); i++)
+    for(int i = 0; i < Players.size(); i++)
     {
         if(player == Players[i])
         {
@@ -170,9 +179,12 @@ void GameManager::PlayerWon(Player* player) {
 
 void GameManager::ShowTopOfCardStack() {
     std::cout << "==============================================" << std::endl;
-    for(int i = 0; i < (sizeof Players/ sizeof Players[0]); i++)
+    for(int i = 0; i < Players.size(); i++)
     {
-        std::cout << "Player[" << i << "] has " << Players[i]->GetHand().size() << " cards" << std::endl;
+        if(Players[i]->GetIsHuman())
+            std::cout << "Player[" << i << "](You) has " << Players[i]->GetHand().size() << " cards" << std::endl;
+        else
+            std::cout << "Player[" << i << "] has " << Players[i]->GetHand().size() << " cards" << std::endl;
     }
     std::cout << "Top of card stack: " << CardStack[CardStack.size() - 1]->CardColor << ", " << CardStack[CardStack.size() - 1]->CardValue << std::endl;
     std::cout << "==============================================" << std::endl;

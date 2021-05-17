@@ -3,6 +3,7 @@
 //
 
 #include "GameManager.h"
+#include <unistd.h>
 
 GameManager::GameManager() {
 
@@ -35,7 +36,7 @@ void GameManager::CreatePlayers() {
         else
             Players.push_back(new Player(false));
 
-        std::cout << Players[i] << std::endl;
+        //std::cout << Players[i] << std::endl;
     }
 }
 
@@ -212,6 +213,9 @@ void GameManager::PlayerFinishedTurn(Player* player) {
     else
         PlayerTurn = 0;
 
+    // Sleep for half a second to simulate computers taking time
+    usleep(0.5 * 1000000);
+    // Start the player turn
     Players[PlayerTurn]->StartTurn(this);
 };
 

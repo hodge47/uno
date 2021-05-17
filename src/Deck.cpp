@@ -41,7 +41,7 @@ void Deck::CreateDeck()
         }
     }
 
-    PrintDeckCards();
+    //PrintDeckCards();
     std::cout << "Finished creating deck..." << std::endl;
 }
 

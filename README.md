@@ -3,7 +3,7 @@
 
 Play Uno against the computer using C++.
 
-![Feature Image](https://mhodgedev.com/wp-content/uploads/2021/05/uno-feature.png)
+![Feature Image](https://mhodgedev.com/wp-content/uploads/2021/05/uno-feature-1024x512-1-e1621873710587.png)
 
 ## Build
 

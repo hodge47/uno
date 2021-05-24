@@ -3,6 +3,8 @@
 
 Play Uno against the computer using C++.
 
+![Feature Image](https://mhodgedev.com/wp-content/uploads/2021/05/uno-feature.png)
+
 ## Build
 
 1. Create build directory inside of root folder 

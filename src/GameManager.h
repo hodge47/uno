@@ -21,21 +21,25 @@ private:
     Card::Color PickedCardColor = (Card::Color)0;
     bool MustMatchCardColorThisTurn = false;
 
+    void CreatePlayers();
+    void DestroyPlayers();
     void DealHandsToPlayers();
+    void DrawFirstCard();
+    void RecycleCards();
+    void CheckForSpecialCard(Card* placedCards);
     Card::Color ChooseRandomColor();
+
+
+
 public:
     GameManager();
     ~GameManager();
-    void CreatePlayers();
-    void DestroyPlayers();
-    void DrawFirstCard();
+
     Card* DrawCard();
-    void RecycleCards();
     bool PlaceCard(class Player* player, Card* placedCard);
-    void CheckForSpecialCard(Card* placedCards);
+    void ShowTopOfCardStack();
     void PlayerFinishedTurn(Player* player);
     void PlayerWon(class Player* player);
-    void ShowTopOfCardStack();
 };
 
 

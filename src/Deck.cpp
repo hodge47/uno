@@ -20,8 +20,7 @@ Deck::~Deck() {
 void Deck::CreateDeck()
 {
     std::cout << "Creating deck..." << std::endl;
-    int cardIndex = 0;
-    // For each color, create cards 0-9 two times
+    // For each color, create cards 0, 13, 14 one time
     for(int i = 0; i < Card::Color::COLOR_COUNT; i++)
     {
         Cards.push_back(new Card((Card::Color)i, (Card::Value)0));
@@ -31,17 +30,13 @@ void Deck::CreateDeck()
     // For each color, create cards 1-13 two times
     for(int i = 0; i < Card::Color::COLOR_COUNT; i++)
     {
-        for(int j = 1; j < 26; j++)
+        // Refactored to just create 2 cards because I was a dummy the first time
+        for(int j = 1; j < 13; j++)
         {
-            int cardValue = j;
-            if(j > 12)
-                cardValue = j - 13;
-            Cards.push_back(new Card((Card::Color)i, (Card::Value)cardValue));
-            cardIndex++;
+            Cards.push_back(new Card((Card::Color)i, (Card::Value)j));
+            Cards.push_back(new Card((Card::Color)i, (Card::Value)j));
         }
     }
-
-    //PrintDeckCards();
     std::cout << "Finished creating deck..." << std::endl;
 }
 
